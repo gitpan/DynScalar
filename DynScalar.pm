@@ -1,6 +1,6 @@
 package DynScalar;
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 use overload (
   '""' => sub { $_[0]->() },
@@ -58,8 +58,24 @@ You can embed arbitrarily complex code in the block.
 
 =head1 CAVEATS
 
-You should only use package variables in the block -- lexically scoped
-variables can not be seen.
+Lexically scoped variables can be used inside the block, but you must do so
+with caution.  The variable must be visible, as in this example:
+
+  use DynScalar;
+
+  my $name;
+  my $str = dynamic { $name };
+  for ("Jeff", "Joe", "Jonas") { $name = $_; print $str }
+
+If you use the lexically scoped variable as the iterator variable in the loop,
+however, Perl will scope it even further, and the C<DynScalar> object will
+not be able to see it:
+
+  use DynScalar;
+
+  my $name;
+  my $str = dynamic { $name };
+  for $name ("Jeff", "Joe", "Jonas") { print $str }  # XXX
 
 =head1 AUTHOR
 

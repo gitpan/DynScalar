@@ -30,8 +30,25 @@ DESCRIPTION
     You can embed arbitrarily complex code in the block.
 
 CAVEATS
-    You should only use package variables in the block -- lexically
-    scoped variables can not be seen.
+    Lexically scoped variables can be used inside the block, but you
+    must do so with caution. The variable must be visible, as in
+    this example:
+
+      use DynScalar;
+
+      my $name;
+      my $str = dynamic { $name };
+      for ("Jeff", "Joe", "Jonas") { $name = $_; print $str }
+
+    If you use the lexically scoped variable as the iterator
+    variable in the loop, however, Perl will scope it even further,
+    and the `DynScalar' object will not be able to see it:
+
+      use DynScalar;
+
+      my $name;
+      my $str = dynamic { $name };
+      for $name ("Jeff", "Joe", "Jonas") { print $str }  # XXX
 
 AUTHOR
       Jeff "japhy" Pinyan
