@@ -1,11 +1,11 @@
 NAME
     DynScalar - closure-in-a-box for simple scalars
 
-SYNOPSYS
+SYNOPSIS
       use DynScalar;  # imports as dynamic()
       use strict;
       use vars '$name';
-
+      
       my $foo = dynamic { "Hello, $name!\n" };
       for $name ("Jeff", "Joe", "Jonas") { print $foo }
 
@@ -17,11 +17,11 @@ DESCRIPTION
       use DynScalar 'delay';  # import as delay()
       use strict;
       use vars qw( $name $age $sex );
-
+      
       my $template = delay {
         "Hello, $name.  You're a good-looking $age-year-old $sex.\n"
       };
-
+      
       while (my $rec = get_person()) {
         ($name,$age,$sex) = $rec->features;
         print $template;
@@ -35,7 +35,7 @@ CAVEATS
     this example:
 
       use DynScalar;
-
+      
       my $name;
       my $str = dynamic { $name };
       for ("Jeff", "Joe", "Jonas") { $name = $_; print $str }
@@ -45,10 +45,11 @@ CAVEATS
     and the `DynScalar' object will not be able to see it:
 
       use DynScalar;
-
+      
       my $name;
       my $str = dynamic { $name };
-      for $name ("Jeff", "Joe", "Jonas") { print $str }  # XXX
+      # this next line will not print as you hoped
+      for $name ("Jeff", "Joe", "Jonas") { print $str }
 
 AUTHOR
       Jeff "japhy" Pinyan

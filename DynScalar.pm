@@ -1,6 +1,6 @@
 package DynScalar;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 use overload (
   '""' => sub { $_[0]->() },
@@ -26,12 +26,12 @@ __END__
 
 DynScalar - closure-in-a-box for simple scalars
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
   use DynScalar;  # imports as dynamic()
   use strict;
   use vars '$name';
-
+  
   my $foo = dynamic { "Hello, $name!\n" };
   for $name ("Jeff", "Joe", "Jonas") { print $foo }
 
@@ -44,11 +44,11 @@ templates:
   use DynScalar 'delay';  # import as delay()
   use strict;
   use vars qw( $name $age $sex );
-
+  
   my $template = delay {
     "Hello, $name.  You're a good-looking $age-year-old $sex.\n"
   };
-
+  
   while (my $rec = get_person()) {
     ($name,$age,$sex) = $rec->features;
     print $template;
@@ -62,7 +62,7 @@ Lexically scoped variables can be used inside the block, but you must do so
 with caution.  The variable must be visible, as in this example:
 
   use DynScalar;
-
+  
   my $name;
   my $str = dynamic { $name };
   for ("Jeff", "Joe", "Jonas") { $name = $_; print $str }
@@ -72,10 +72,11 @@ however, Perl will scope it even further, and the C<DynScalar> object will
 not be able to see it:
 
   use DynScalar;
-
+  
   my $name;
   my $str = dynamic { $name };
-  for $name ("Jeff", "Joe", "Jonas") { print $str }  # XXX
+  # this next line will not print as you hoped
+  for $name ("Jeff", "Joe", "Jonas") { print $str }
 
 =head1 AUTHOR
 
